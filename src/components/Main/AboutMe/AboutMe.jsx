@@ -5,7 +5,7 @@ import photo from '../../../images/photo.jpg';
 function AboutMe() {
   return (
     <article className='about-me'>
-      <h2 className='project__title'>Пилот</h2>
+      <h2 className='about-me__title-main'>Пилот</h2>
       <section className='about-me__student'>
         <div className='about-me__description-container'>
           <h3 className='about-me__title'>Айртон Сенна</h3>
@@ -24,7 +24,7 @@ function AboutMe() {
           <a
             href='https://github.com/kochetkov1'
             target='blank'
-            className='about-me__link_github navigation__link_profile-main'
+            className='about-me__link'
           >
             Github
           </a>

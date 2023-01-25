@@ -13,6 +13,7 @@ function Register() {
               className='register__input'
               type='text'
               name='name'
+              id='name'
               defaultValue='Василий'
             />
             <span className='register__error'>Что-то пошло не так...</span>
@@ -23,6 +24,7 @@ function Register() {
               className='register__input'
               type='email'
               name='email'
+              id='email'
               defaultValue='ya@ya.ru'
             />
             <span className='register__error'>Что-то пошло не так...</span>
@@ -33,6 +35,7 @@ function Register() {
               className='register__input register__input_error'
               type='password'
               name='password'
+              id='password'
               defaultValue='12345'
             />
             <span className='register__error register__error_active'>
@@ -40,8 +43,10 @@ function Register() {
             </span>
           </label>
         </fieldset>
-        <fieldset className='register__button-field'>
-          <button className='register__button animation'>Зарегистрироваться</button>
+        <fieldset className='register__button-field register__button-field-login'>
+          <button className='register__button animation'>
+            Зарегистрироваться
+          </button>
           <div className='register__container'>
             <p className='register__question'>Уже зарегистрированы?</p>
             <a className='register__link animation' href='/signin'>

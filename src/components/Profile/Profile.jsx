@@ -13,6 +13,7 @@ function Profile() {
               className='profile__input'
               type='text'
               name='name'
+              id='name'
               defaultValue='Василий'
             />
           </label>
@@ -22,6 +23,7 @@ function Profile() {
               className='profile__input'
               type='email'
               name='email'
+              id='email'
               defaultValue='pochta@yandex.ru'
             />
           </label>

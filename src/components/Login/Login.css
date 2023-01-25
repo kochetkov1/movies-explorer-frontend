@@ -1,9 +1,0 @@
-.login__button-field {
-  margin-top: 157px;
-}
-
-@media screen and (max-height: 650px) {
-  .login__button-field {
-    margin-top: 57px;
-  }
-}

@@ -28,6 +28,24 @@
   align-items: flex-start;
 }
 
+.about-me__title-main {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+
+  letter-spacing: -0.04em;
+
+  color: #ffffff;
+
+  padding: 0 0 23px 0;
+  margin: 0;
+
+  width: 100%;
+  max-width: 1140px;
+  border-bottom: 1px solid #dadada;
+}
+
 .about-me__title {
   font-style: normal;
   font-weight: 400;
@@ -68,7 +86,7 @@
   margin: 16px 0 0 0;
 }
 
-.about-me__link_github {
+.about-me__link {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -77,7 +95,7 @@
   color: #ffffff;
   text-decoration: none;
 
-  margin: 99px 0 0 0;
+  margin: 99px 0 0 50px;
 }
 
 .about-me__photo {
@@ -144,6 +162,12 @@
     padding: 70px 14px;
   }
 
+  .about-me__title-main {
+    font-size: 18px;
+
+    padding: 0 0 28px 0;
+  }
+
   .about-me__title {
     font-size: 30px;
     line-height: 36px;
@@ -165,7 +189,7 @@
     margin: 20px 0 0 0;
   }
 
-  .about-me__link_github {
+  .about-me__link {
     margin: 40px 0 0 0;
   }
 }

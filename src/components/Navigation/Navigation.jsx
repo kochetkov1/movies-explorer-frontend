@@ -13,7 +13,7 @@ function Navigation(props) {
   } = props;
 
   const navigationClassName = cn(
-    'navigation',
+    'navigation navigation_main',
     isMenuOpen ? 'navigation_opened' : null,
   );
 
@@ -38,7 +38,7 @@ function Navigation(props) {
 
   return (
     <div className={navigationClassName}>
-      <div className='navigation__container_mobile'>
+      <div className='navigation__container-mobile'>
         <button
           className='navigation__menu-button navigation__menu-button_close_mobile animation'
           onClick={isOpen}

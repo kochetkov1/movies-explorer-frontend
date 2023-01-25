@@ -14,6 +14,7 @@ function Login() {
               className='register__input'
               type='email'
               name='email'
+              id='email'
               defaultValue='ya@ya.ru'
             />
             <span className='register__error'>Что-то пошло не так...</span>
@@ -24,6 +25,7 @@ function Login() {
               className='register__input register__input_error'
               type='password'
               name='password'
+              id='password'
               defaultValue='12345'
             />
             <span className='register__error register__error_active'>
@@ -31,11 +33,13 @@ function Login() {
             </span>
           </label>
         </fieldset>
-        <fieldset className='register__button-field login__button-field'>
+        <fieldset className='register__button-field'>
           <button className='register__button animation'>Войти</button>
           <div className='register__container'>
             <p className='register__question'>Ещё не зарегистрированы?</p>
-            <a className='register__link animation' href='/signup'>Регистрация</a>
+            <a className='register__link animation' href='/signup'>
+              Регистрация
+            </a>
           </div>
         </fieldset>
       </form>

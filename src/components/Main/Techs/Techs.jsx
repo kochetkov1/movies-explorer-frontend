@@ -4,9 +4,9 @@ import './Techs.css';
 function Techs() {
   return (
     <article className='techs'>
-      <h2 className='project__title'>Технологии</h2>
-      <h3 className='promo__title techs__title'>7 технологий</h3>
-      <p className='project__paragraph techs__paragraph'>
+      <h2 className='techs__title'>Технологии</h2>
+      <h3 className='techs__subtitle'>7 технологий</h3>
+      <p className='techs__paragraph'>
         На курсе веб-разработки мы освоили технологии, которые применили в
         дипломном проекте.
       </p>
