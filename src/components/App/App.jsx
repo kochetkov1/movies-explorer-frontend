@@ -1,11 +1,5 @@
 import React from 'react';
 import './App.css';
-// import {
-//   Routes,
-//   Route,
-//   useNavigate,
-//   Navigate,
-// } from 'react-router-dom';
 import {
   Routes,
   Route,
@@ -80,7 +74,7 @@ function App() {
             navigate('/movies');
           })
           .catch((err) => {
-            setApiError(err.message);
+            console.log(err.message);
           });
       })
       .catch((err) => {
@@ -92,7 +86,7 @@ function App() {
     mainApi
       .createUser({ name, email, password })
       .then(() => {
-        handleLogin(email, password);
+        handleLogin(email, password, setApiError);
         setApiError('');
       })
       .catch((err) => {
