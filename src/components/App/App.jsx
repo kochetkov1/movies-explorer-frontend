@@ -1,6 +1,18 @@
 import React from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+// import {
+//   Routes,
+//   Route,
+//   useNavigate,
+//   Navigate,
+// } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
 import Header from '../Header/Header.jsx';
 import Main from '../Main/Main.jsx';
 import Footer from '../Footer/Footer.jsx';
@@ -11,122 +23,224 @@ import Movies from '../Movies/Movies.jsx';
 import SavedMovies from '../Movies/SavedMovies/SavedMovies.jsx';
 import NotFound from '../NotFound/NotFound.jsx';
 import Navigation from '../Navigation/Navigation.jsx';
+import mainApi from '../../utils/MainApi.js';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 
 function App() {
-  // Выбор состояния для смены наполнения header (для этапа верстки)
-  const isAuthorized = true;
-  // const isAuthorized = false;
-
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [authorized, setAuthorized] = React.useState(false);
+  const navigate = useNavigate();
 
   function handleMenuOpenClick() {
     setIsMenuOpen(!isMenuOpen);
   }
 
+  const handleLogout = () => {
+    localStorage.clear();
+    setCurrentUser({});
+    setAuthorized(false);
+    navigate('/');
+    mainApi.setToken('');
+  };
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem('jwt');
+    mainApi.setToken(jwt);
+    if (!jwt) return;
+    mainApi
+      .getCurrentUser()
+      .then((user) => {
+        setAuthorized(true);
+        setCurrentUser(user);
+      })
+      .catch((err) => {
+        setAuthorized(false);
+        handleLogout();
+        console.log('Ошибка: ', err);
+      });
+  };
+
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  const handleLogin = (email, password, setApiError) => {
+    mainApi
+      .login({ email, password })
+      .then((data) => {
+        mainApi.setToken(data.token);
+        localStorage.setItem('jwt', data.token);
+        setAuthorized(true);
+        setApiError('');
+        mainApi
+          .getCurrentUser()
+          .then((res) => {
+            setCurrentUser({ name: res.name, email: res.email });
+            navigate('/movies');
+          })
+          .catch((err) => {
+            setApiError(err.message);
+          });
+      })
+      .catch((err) => {
+        setApiError(err.message);
+      });
+  };
+
+  const handleRegister = (name, email, password, setApiError) => {
+    mainApi
+      .createUser({ name, email, password })
+      .then(() => {
+        handleLogin(email, password);
+        setApiError('');
+      })
+      .catch((err) => {
+        setApiError(err.message);
+      });
+  };
+
+  function handleUpdateUser(name, email, setApiError) {
+    const token = localStorage.getItem('jwt') || '';
+    mainApi.setToken(token);
+    mainApi
+      .updateUser({ name, email })
+      .then(() => {
+        setCurrentUser({ name, email });
+        setApiError('');
+      })
+      .catch((err) => {
+        setApiError(err.message);
+      });
+  }
+
   return (
-    <Routes>
-      <Route
-        path='/'
-        element={
-          <>
-            <Header
-              isOpen={handleMenuOpenClick}
-              isSignupOrSignin={false}
-              isAuthorized={isAuthorized}
-            ></Header>
-            <Main></Main>
-            <Footer></Footer>
-            <Navigation
-              isOpen={handleMenuOpenClick}
-              isMenuOpen={isMenuOpen}
-              isMain={true}
-            ></Navigation>
-          </>
-        }
-      />
+    <CurrentUserContext.Provider value={currentUser}>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <>
+              <Header
+                isOpen={handleMenuOpenClick}
+                isSignupOrSignin={false}
+                isAuthorized={authorized}
+              ></Header>
+              <Main></Main>
+              <Footer></Footer>
+              <Navigation
+                isOpen={handleMenuOpenClick}
+                isMenuOpen={isMenuOpen}
+                isMain={true}
+              ></Navigation>
+            </>
+          }
+        />
 
-      <Route
-        path='/movies'
-        element={
-          <>
-            <Header
-              isOpen={handleMenuOpenClick}
-              isSignupOrSignin={false}
-              isAuthorized={isAuthorized}
-            />
-            <Movies />
-            <Footer />
-            <Navigation
-              isOpen={handleMenuOpenClick}
-              isMenuOpen={isMenuOpen}
-              isMovies={true}
-            />
-          </>
-        }
-      />
+        <Route
+          path='/movies'
+          element={
+            <ProtectedRoute isAuthorized={authorized}>
+              <>
+                <Header
+                  isOpen={handleMenuOpenClick}
+                  isSignupOrSignin={false}
+                  isAuthorized={authorized}
+                />
+                <Movies />
+                <Footer />
+                <Navigation
+                  isOpen={handleMenuOpenClick}
+                  isMenuOpen={isMenuOpen}
+                  isMovies={true}
+                />
+              </>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path='/saved-movies'
-        element={
-          <>
-            <Header
-              isOpen={handleMenuOpenClick}
-              isSignupOrSignin={false}
-              isAuthorized={isAuthorized}
-            />
-            <SavedMovies />
-            <Footer />
-            <Navigation
-              isOpen={handleMenuOpenClick}
-              isMenuOpen={isMenuOpen}
-              isSavedMovies={true}
-            />
-          </>
-        }
-      />
+        <Route
+          path='/saved-movies'
+          element={
+            <ProtectedRoute isAuthorized={authorized}>
+              <>
+                <Header
+                  isOpen={handleMenuOpenClick}
+                  isSignupOrSignin={false}
+                  isAuthorized={authorized}
+                />
+                <SavedMovies />
+                <Footer />
+                <Navigation
+                  isOpen={handleMenuOpenClick}
+                  isMenuOpen={isMenuOpen}
+                  isSavedMovies={true}
+                />
+              </>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path='/signup'
-        element={
-          <>
-            <Header isSignupOrSignin={true} />
-            <Register />
-          </>
-        }
-      />
+        <Route
+          path='/signup'
+          element={
+            <>
+              {!authorized ? (
+                <>
+                  <Header isSignupOrSignin={true} />
+                  <Register handleRegister={handleRegister} />
+                </>
+              ) : (
+                <Navigate to='/movies' />
+              )}
+            </>
+          }
+        />
 
-      <Route
-        path='/signin'
-        element={
-          <>
-            <Header isSignupOrSignin={true} />
-            <Login />
-          </>
-        }
-      />
+        <Route
+          path='/signin'
+          element={
+            <>
+              {!authorized ? (
+                <>
+                  <Header isSignupOrSignin={true} />
+                  <Login handleLogin={handleLogin} />
+                </>
+              ) : (
+                <Navigate to='/movies' />
+              )}
+            </>
+          }
+        />
 
-      <Route
-        path='/profile'
-        element={
-          <>
-            <Header
-              isOpen={handleMenuOpenClick}
-              isSignupOrSignin={false}
-              isAuthorized={isAuthorized}
-            />
-            <Profile />
-            <Navigation
-              isOpen={handleMenuOpenClick}
-              isMenuOpen={isMenuOpen}
-              isProfile={true}
-            />
-          </>
-        }
-      />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute isAuthorized={authorized}>
+              <>
+                <Header
+                  isOpen={handleMenuOpenClick}
+                  isSignupOrSignin={false}
+                  isAuthorized={authorized}
+                />
+                <Profile
+                  authorized={authorized}
+                  onUpdateUser={handleUpdateUser}
+                  handleLogout={handleLogout}
+                />
+                <Navigation
+                  isOpen={handleMenuOpenClick}
+                  isMenuOpen={isMenuOpen}
+                  isProfile={true}
+                />
+              </>
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Временное решение для этапа верстки */}
-      <Route path='/404' element={<NotFound />} />
-    </Routes>
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </CurrentUserContext.Provider>
   );
 }
 
