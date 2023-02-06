@@ -5,3 +5,4 @@
   
 ### _Ссылка на страницу приложения:_ https://kochetkov111.nomoredomains.club
 
+### _Ссылка на pull request:_ https://github.com/kochetkov1/movies-explorer-frontend/pull/2
