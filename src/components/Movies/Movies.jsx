@@ -76,6 +76,7 @@ function Movies() {
   const saveMovie = (card) => {
     if (card.saved) {
       mainApi.deleteMovie(card._id).then(() => {
+        moviesApi.deleteMovie(card.movieId);
         setCards((beatCards) => {
           const mergeDeletedCards = beatCards.map((beatCard) => {
             if (beatCard._id === card._id) {

@@ -35,7 +35,7 @@ function MoviesCard({ card, saveMovie }) {
           </button>
         )}
         {location.pathname === '/movies' && card.saved && (
-          <button className={classNames}></button>
+          <button className={classNames} onClick={handleSaveMovie}></button>
         )}
         {location.pathname === '/saved-movies' && (
           <button

@@ -43,7 +43,6 @@ function App() {
   const tokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
     mainApi.setToken(jwt);
-    console.log('jwt', jwt);
     if (jwt) {
       mainApi
         .getCurrentUser()
@@ -64,7 +63,6 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-    console.log(authorized);
   }, [authorized]);
 
   const handleLogin = (email, password, setApiError) => {
