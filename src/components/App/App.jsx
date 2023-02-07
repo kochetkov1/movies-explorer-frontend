@@ -23,7 +23,8 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-  const [authorized, setAuthorized] = React.useState(false);
+  const [authorized, setAuthorized] = React.useState(true);
+  const [isAuth, setIsAuth] = React.useState(false);
   const navigate = useNavigate();
 
   function handleMenuOpenClick() {
@@ -34,6 +35,7 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setAuthorized(false);
+    setIsAuth(false);
     navigate('/');
     mainApi.setToken('');
   };
@@ -41,23 +43,29 @@ function App() {
   const tokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
     mainApi.setToken(jwt);
-    if (!jwt) return;
-    mainApi
-      .getCurrentUser()
-      .then((user) => {
-        setAuthorized(true);
-        setCurrentUser(user);
-      })
-      .catch((err) => {
-        setAuthorized(false);
-        handleLogout();
-        console.log('Ошибка: ', err);
-      });
+    console.log('jwt', jwt);
+    if (jwt) {
+      mainApi
+        .getCurrentUser()
+        .then((user) => {
+          setAuthorized(true);
+          setIsAuth(true);
+          setCurrentUser(user);
+        })
+        .catch((err) => {
+          setAuthorized(false);
+          handleLogout();
+          console.log('Ошибка: ', err);
+        });
+    } else {
+      setAuthorized(false);
+    }
   };
 
   React.useEffect(() => {
     tokenCheck();
-  }, []);
+    console.log(authorized);
+  }, [authorized]);
 
   const handleLogin = (email, password, setApiError) => {
     mainApi
@@ -179,7 +187,7 @@ function App() {
           path='/signup'
           element={
             <>
-              {!authorized ? (
+              {!isAuth ? (
                 <>
                   <Header isSignupOrSignin={true} />
                   <Register handleRegister={handleRegister} />
@@ -195,7 +203,7 @@ function App() {
           path='/signin'
           element={
             <>
-              {!authorized ? (
+              {!isAuth ? (
                 <>
                   <Header isSignupOrSignin={true} />
                   <Login handleLogin={handleLogin} />
