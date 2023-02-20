@@ -47,6 +47,25 @@
   margin: 61px 0 0 0 ;
 }
 
+.card-list__message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-list__message {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+
+  color: #ffffff;
+  text-align: center;
+
+  padding: 70px 0 0 0;
+  margin: 0;
+}
+
 @media screen and (max-width: 881px) {
   .card-list {
     padding: 70px 30px 80px 30px;

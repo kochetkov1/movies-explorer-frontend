@@ -2,22 +2,7 @@
 Репозиторий для дипломного проекта, включающий фронтенд часть приложения.
 
 ### _Ссылка на макет:_ https://disk.yandex.ru/d/PTfYugxLtNBRqw
-
-### Для изменения состояния header в App.js изменить состояние "isAuthorized" 
   
-  ## Страницы доступные на этапе верстки:
+### _Ссылка на страницу приложения:_ https://kochetkov111.nomoredomains.club
 
-    '/'
-
-    '/movies'
-
-    '/saved-movies'
-
-    '/signup'
-
-    '/signin'
-
-    '/profile'
-
-    '/404'
-
+### _Ссылка на pull request:_ https://github.com/kochetkov1/movies-explorer-frontend/pull/2

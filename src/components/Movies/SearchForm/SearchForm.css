@@ -51,6 +51,8 @@
   align-items: center;
 
   border: none;
+
+  position: relative;
 }
 
 .search__input {
@@ -98,6 +100,19 @@
 
   margin: 0 30px 0 21px;
   padding: 0;
+}
+
+.search__message {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 18px;
+
+  color: #ee3465;
+
+  position: absolute;
+  top: 53px;
+  left: 65px;
 }
 
 .search__switch-group {
@@ -228,6 +243,10 @@
 
   .search__image {
     display: none;
+  }
+
+  .search__message {
+    left: 20px;
   }
 
   .search__input {

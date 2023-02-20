@@ -2,54 +2,45 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard.jsx';
 import Preloader from '../Preloader/Preloader.jsx';
-import image1 from '../../../images/card-image1.png';
-import image2 from '../../../images/card-image2.png';
 
-function MoviesCardList() {
-  // Временное решение для демонстрации функциональности без API
-  const cardName1 = '33 слова о дизайне';
-  const cardName2 = 'Баския: Взрыв реальности';
-
-  const [isContent, setIsContent] = React.useState(false);
-
-  function toggleContent() {
-    setIsContent(!isContent);
-  }
-
-  React.useEffect(() => {
-    setTimeout(toggleContent, 2000);
-  }, []);
-
+function MoviesCardList({
+  cards,
+  findMovies,
+  saveMovie,
+  preloader,
+  changeCounter,
+  sortedСards,
+  numberCounter,
+}) {
   return (
     <article className='card-list'>
-      {isContent ? (
+      {preloader ? (
+        <Preloader />
+      ) : (
         <>
           <ul className='card-list__items'>
-            <MoviesCard image={image1} cardName={cardName1} />
-            <MoviesCard image={image2} cardName={cardName2} saveStatus={true} />
-            <MoviesCard
-              image={image1}
-              cardName={cardName1}
-              deleteStatus={true}
-            />
-            <MoviesCard
-              image={image2}
-              cardName={cardName2}
-              deleteStatus={true}
-            />
-            <MoviesCard image={image1} cardName={cardName1} />
-            <MoviesCard image={image2} cardName={cardName2} saveStatus={true} />
-            <MoviesCard image={image1} cardName={cardName1} saveStatus={true} />
-            <MoviesCard image={image2} cardName={cardName2} />
-            <MoviesCard image={image1} cardName={cardName1} saveStatus={true} />
-            <MoviesCard image={image2} cardName={cardName2} />
-            <MoviesCard image={image1} cardName={cardName1} />
-            <MoviesCard image={image2} cardName={cardName2} />
+            {cards.map((card) => (
+              <MoviesCard
+                key={card.movieId}
+                card={card}
+                saveMovie={saveMovie}
+              />
+            ))}
+            {cards.length === 0 && findMovies && !preloader && (
+              <li className='card-list__message-container'>
+                <span className='card-list__message'>Ничего не нашлось</span>
+              </li>
+            )}
           </ul>
-          <button className='card-list__button animation'>Ещё</button>
+          {sortedСards.length > numberCounter && !preloader && (
+            <button
+              className='card-list__button animation'
+              onClick={changeCounter}
+            >
+              Ещё
+            </button>
+          )}
         </>
-      ) : (
-        <Preloader />
       )}
     </article>
   );
